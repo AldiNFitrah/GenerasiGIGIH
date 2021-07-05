@@ -1,4 +1,5 @@
 require_relative "agile_knight.rb"
+require_relative "knight.rb"
 require_relative "turn_based_combat.rb"
 
 knight1 = AgileKnight.new("Jin Sakai", 100, 50)
