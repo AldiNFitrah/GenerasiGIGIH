@@ -1,16 +1,23 @@
 require_relative './warrior'
 
 class Hero < Warrior
+
   def initialize(name, hitpoint, attack_damage, agility)
     super(name, hitpoint, attack_damage)
     @agility = agility
   end
 
+  def get_available_actions(enemy_army)
+
   def take_turn(enemy_army, own_army)
     loop do
+      if own_army.length(exclude = [self]) > 0
+        is_hero_can_heal = true
+      end
+
       puts("As #{@name}, what do you want to do this turn?")
       puts('1) Attack an enemy')
-      puts('2) Heal an ally')
+      puts('2) Heal an ally') if is_hero_can_heal
 
       hero_choice = gets.chomp
 
@@ -18,7 +25,12 @@ class Hero < Warrior
       when '1'
         ask_to_attack(enemy_army)
       when '2'
-        ask_to_heal(own_army)
+        if is_hero_can_heal
+          ask_to_heal(own_army)
+        else
+          puts("\nPlease input a valid number")
+          next
+        end
       else
         puts("\nPlease input a valid number")
         next

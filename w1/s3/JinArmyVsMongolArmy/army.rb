@@ -16,11 +16,11 @@ class Army
   end
 
   def to_s
-    @army.map.with_index { |warrior, idx| "#{idx + 1}) #{warrior.name}" }.join("\n")
+    @army.map.with_index(1) { |warrior, idx| "#{idx}) #{warrior.name}" }.join("\n")
   end
 
-  def length
-    @army.length
+  def length(exclude=[])
+    (@army - exclude).length
   end
 
   def get(idx, exlude = [])
@@ -39,8 +39,8 @@ class Army
   end
 
   def print_list(exclude = [])
-    (@army - exclude).each_with_index do |warrior, idx|
-      puts("#{idx + 1}) #{warrior.name}")
+    (@army - exclude).each.with_index(1) do |warrior, idx|
+      puts("#{idx}) #{warrior.name}")
     end
   end
 end
