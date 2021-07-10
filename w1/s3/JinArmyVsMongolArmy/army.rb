@@ -19,7 +19,7 @@ class Army
     @army.map.with_index(1) { |warrior, idx| "#{idx}) #{warrior.name}" }.join("\n")
   end
 
-  def length(exclude=[])
+  def length(exclude = [])
     (@army - exclude).length
   end
 

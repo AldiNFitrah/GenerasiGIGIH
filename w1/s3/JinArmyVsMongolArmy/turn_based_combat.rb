@@ -3,8 +3,6 @@ class TurnBasedCombat
   def initialize(army1, army2)
     @army1 = army1
     @army2 = army2
-
-    @is_army1_turn = true
   end
 
   def battle_till_die

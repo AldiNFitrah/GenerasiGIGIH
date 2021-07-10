@@ -1,43 +1,54 @@
 require_relative './warrior'
 
 class Hero < Warrior
-
   def initialize(name, hitpoint, attack_damage, agility)
     super(name, hitpoint, attack_damage)
     @agility = agility
   end
 
-  def get_available_actions(enemy_army)
+  def get_callable_actions(enemy_army, own_army)
+    callable = []
+
+    if enemy_army.length
+      callable.push({
+                      action: method(:ask_to_attack),
+                      prompt: 'Attack an enemy',
+                      params: [enemy_army]
+                    })
+    end
+
+    if own_army.length(exclude = [self]) > 0
+      callable.push({
+                      action: method(:ask_to_heal),
+                      prompt: 'Heal an ally',
+                      params: [own_army]
+                    })
+    end
+
+    callable
+  end
 
   def take_turn(enemy_army, own_army)
+    callable_list = get_callable_actions(enemy_army, own_army)
+    hero_choice = nil
     loop do
-      if own_army.length(exclude = [self]) > 0
-        is_hero_can_heal = true
-      end
-
       puts("As #{@name}, what do you want to do this turn?")
-      puts('1) Attack an enemy')
-      puts('2) Heal an ally') if is_hero_can_heal
-
-      hero_choice = gets.chomp
-
-      case hero_choice
-      when '1'
-        ask_to_attack(enemy_army)
-      when '2'
-        if is_hero_can_heal
-          ask_to_heal(own_army)
-        else
-          puts("\nPlease input a valid number")
-          next
-        end
-      else
-        puts("\nPlease input a valid number")
-        next
+      callable_list.each.with_index(1) do |callable, idx|
+        puts("#{idx}) #{callable[:prompt]}")
       end
 
-      break
+      begin
+        hero_choice = gets.chomp.to_i
+        raise StandardError if hero_choice < 1 || hero_choice > callable_list.length
+
+        break
+      rescue StandardError => e
+        puts("\nPlease input a valid number")
+      end
     end
+
+    callable = callable_list[hero_choice - 1]
+    callable[:action].call(*callable[:params])
   end
 
   def ask_to_attack(enemy_army)
@@ -52,7 +63,6 @@ class Hero < Warrior
 
         break
       rescue StandardError => e
-        p(e)
         puts("\nPlease input a valid number")
       end
     end
@@ -65,7 +75,7 @@ class Hero < Warrior
     hero_choice = nil
     loop do
       puts('Which ally do you want to heal?')
-      own_army.print_list([self])
+      own_army.print_list(exclude = [self])
 
       begin
         hero_choice = gets.chomp.to_i
