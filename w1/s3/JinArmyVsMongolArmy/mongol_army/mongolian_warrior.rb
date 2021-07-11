@@ -22,10 +22,10 @@ class MongolianWarrior < BaseWarrior
       return true
     end
 
-    false
+    return false
   end
 
   def in_battle?
-    !@has_fleed && super
+    return !@has_fleed && super
   end
 end

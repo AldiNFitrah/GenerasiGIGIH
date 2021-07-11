@@ -6,29 +6,32 @@ class Army
   def attack(enemy_army)
     @army.each do |warrior|
       warrior.take_turn(enemy_army, self)
-      break unless enemy_army.able_to_war?
+
+      if !enemy_army.able_to_war?
+        break
+      end
     end
   end
 
   def able_to_war?
     @army = @army.select { |warrior| warrior.in_battle? }
-    @army.length.positive?
+    return @army.length.positive?
   end
 
   def to_s
-    @army.map.with_index(1) { |warrior, idx| "#{idx}) #{warrior.name}" }.join("\n")
+    return @army.map.with_index(1) { |warrior, idx| "#{idx}) #{warrior.name}" }.join("\n")
   end
 
   def length(exclude = [])
-    (@army - exclude).length
+    return (@army - exclude).length
   end
 
   def get(idx, exlude = [])
-    (@army - exlude)[idx]
+    return (@army - exlude)[idx]
   end
 
   def sample
-    @army.sample
+    return @army.sample
   end
 
   def check_army

@@ -18,18 +18,21 @@ class BaseWarrior
 
   def damaged(damage)
     @hitpoint -= damage
-    puts("#{@name} dies") unless alive?
+
+    if !alive?
+      puts("#{@name} dies")
+    end
   end
 
   def to_s
-    "#{@name} has #{@hitpoint} hitpoints and #{@attack_damage} attack damage"
+    return "#{@name} has #{@hitpoint} hitpoints and #{@attack_damage} attack damage"
   end
 
   def alive?
-    @hitpoint.positive?
+    return @hitpoint.positive?
   end
 
   def in_battle?
-    alive?
+    return alive?
   end
 end
