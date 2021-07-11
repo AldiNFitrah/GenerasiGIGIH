@@ -1,8 +1,8 @@
 require_relative './army'
 require_relative './hero'
-require_relative './mongol_army/archer'
-require_relative './mongol_army/spearman'
-require_relative './mongol_army/swordsman'
+require_relative './mongol_warrior/archer'
+require_relative './mongol_warrior/spearman'
+require_relative './mongol_warrior/swordsman'
 require_relative './turn_based_combat'
 require_relative './warrior'
 
