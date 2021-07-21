@@ -12,11 +12,16 @@ get '/' do
 end
 
 get '/items/new' do
-  return erb(:create)
+  categories = get_all_categories()
+  return erb(:create, {
+    locals: {
+      categories: categories,
+    }
+  })
 end
 
 post '/items/create' do
-  create_new_item(params["name"], params["price"])
+  create_new_item(params["name"], params["price"], params['category_id'])
   return redirect('/')
 end
 
@@ -35,15 +40,17 @@ get '/items/:id/delete' do
 end
 
 get '/items/:id/edit' do
+  categories = get_all_categories()
   item = get_item_by_id(params["id"].to_i)
   return erb(:edit, {
     locals: {
       item: item,
+      categories: categories,
     }
   })
 end
 
-get '/items/:id/update' do
+post '/items/:id/update' do
   update_item_by_id(params["id"], params["name"], params["price"], params["category_id"])
   return redirect("/")
 end

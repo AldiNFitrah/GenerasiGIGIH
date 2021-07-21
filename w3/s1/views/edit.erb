@@ -7,9 +7,10 @@
   <title>Document</title>
 </head>
 <body>
+  <a href="/"><h4>Back</h4></a>
   <h1>Edit <%= item.name %></h1>
 
-  <form action="/items/update/<%= item.id %>" method="post">
+  <form action="/items/<%= item.id %>/update" method="post">
     <input type="text" name="name" required placeholder="new item name" value="<%= item.name %>">
     <input type="number" name="price" required placeholder="new item price"value="<%= item.price %>">
     <select name="category_id" id="category_id">
@@ -21,7 +22,7 @@
           <% else %>
           <% end %>
         ><%= category.name %></option>
-      <% end%>
+      <% end %>
     </select>
     <button type="submit">Update Item</button>
   </form>

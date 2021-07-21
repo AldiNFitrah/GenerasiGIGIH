@@ -7,11 +7,17 @@
   <title>Document</title>
 </head>
 <body>
+  <a href="/"><h4>Back</h4></a>
   <h1>Create new Item</h1>
 
   <form action="/items/create" method="post">
     <input type="text" name="name" required placeholder="item name">
     <input type="number" name="price" required placeholder="item price">
+    <select name="category_id" id="category_id">
+      <% categories.each do |category| %>
+        <option value="<%= category.id %>"><%= category.name %></option>
+      <% end %>
+    </select>
     <button type="submit">Add item</button>
   </form>
 </body>

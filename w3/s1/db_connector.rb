@@ -96,21 +96,37 @@ def get_item_by_id(id)
   return item
 end
 
-def create_new_item(name, price)
+def create_new_item(name, price, category_id)
   client = create_db_client
   client.query("
     INSERT INTO items (name, price)
     VALUES('#{name}', '#{price}')
   ")
+
+  raw_data = client.query("
+    SELECT * FROM items ORDER BY id DESC LIMIT 1
+  ")
+
+  if raw_data.count == 0
+    return nil
+  else
+    data = raw_data.to_a[0]
+    item = Item.new(data['id'], data['name'], data['price'])
+  end
+
+  client.query("
+    INSERT INTO item_categories (item_id, category_id)
+    VALUES(#{item.id}, #{category_id})
+  ")
 end
 
-def get_all_categories(name)
+def get_all_categories()
   client = create_db_client
   raw_data = client.query('SELECT * FROM categories')
 
   categories = []
   raw_data.each do |data|
-    categoriy = Category.new(data['id'], data['name'])
+    category = Category.new(data['id'], data['name'])
     categories.push(category)
   end
 
@@ -121,7 +137,7 @@ def get_category_by_id(id)
   client = create_db_client
   raw_data = client.query("
     SELECT *
-    FROM category 
+    FROM categories
     WHERE id = #{id}
   ")
 
