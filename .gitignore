@@ -66,6 +66,9 @@ build-iPhoneSimulator/
 !.vscode/extensions.json
 *.code-workspace
 
+# For exploring
+tmp.rb
+
 # Local History for Visual Studio Code
 .history/
 
