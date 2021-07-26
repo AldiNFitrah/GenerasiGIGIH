@@ -1,0 +1,9 @@
+<div class="px-4">
+  <h1>Item: <%= item.name %></h1>
+  <h4>Category:</h4>
+  <ul>
+    <% item.categories.each do |category| %>
+      <li> <%= category.name %> </li>
+    <% end %>
+  </ul>
+</div>

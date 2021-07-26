@@ -155,20 +155,6 @@ def update_item_by_id(id, name, price, category_id)
   client = create_db_client
   category = get_category_by_id(category_id)
 
-  raw_data = client.query("
-    SELECT *
-    FROM item_categories ic
-    WHERE
-      item_id = #{id}
-      AND category_id = #{category_id}
-  ")
-
-  if raw_data.count == 0
-    return nil
-  else
-    item_category = raw_data.to_a[0]
-  end
-
   client.query("
     UPDATE item_categories ic
     SET category_id = #{category_id}

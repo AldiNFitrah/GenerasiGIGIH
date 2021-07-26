@@ -1,0 +1,29 @@
+<table>
+  <tr>
+    <th>Nama</th>
+    <th>Price</th>
+    <th colspan="3">Action</th>
+  </tr>
+  <tbody>
+    <% items.each do |item| %>
+      <tr>
+        <td><%= item.name %></td>
+        <td><%= item.price %></td>
+        <td><a href=<%= "/items/#{item.id}" %>> <button>Show</button> </a></td>
+        <td><a href=<%= "/items/#{item.id}/edit" %>> <button>Edit</button> </a></td>
+        <td>
+          <a
+            href=<%= "/items/#{item.id}/delete" %>
+            onclick="return confirm('Are you sure want to delete <%= item.name %>?')"
+          >
+            <button>Delete</button>
+          </a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<div>
+  <a href="/items/new"><button>Insert new item</button></a>
+</div>

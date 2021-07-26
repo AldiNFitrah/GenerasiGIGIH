@@ -1,0 +1,49 @@
+
+<div class="px-4">
+  <div class="">
+    <a href="/item/new" class="px-4 py-2 bg-blue-400 rounded font-bold">
+      <button class="btn btn-info">
+        Create New Item
+      </button>
+    </a>
+  </div>
+
+
+  <h1>Item</h1>
+
+  <table class="table table-hover table-sm">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% items.each do |item| %>
+      <tr>
+        <td scope="row"> <%= item.name %> </td>
+        <td>
+          <a href="/item/<%= item.id %>">
+            <button class="btn btn-primary">
+              Details
+            </button>
+          </a>
+          <a href="/item/<%= item.id %>/edit">
+            <button class="btn btn-warning">
+              Edit
+            </button>
+          </a>
+          <a
+            href="/item/<%= item.id %>/delete"
+            onclick="return confirm('Delete item: <%= item.name %>?')"
+          >
+            <button class="btn btn-danger">
+              Delete
+            </button>
+          </a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</div>

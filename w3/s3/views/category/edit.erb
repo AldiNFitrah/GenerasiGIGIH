@@ -1,0 +1,26 @@
+<div class="px-4">
+  <h1>Edit Category</h1>
+
+  <div>
+    <form action="/category/<%= category.id %>/update" method="post">
+      <label for="name">Name:</label>
+      <input type="text" name="name" id="name" value="<%= category.name %>">
+      <button type="submit" class="btn btn-primary">Change Name</button>
+    </form>
+  </div>
+  <ul>
+    <% category.items.each do |item| %>
+      <li>
+        <%= item.name %>
+        <a
+          href="/category/<%= category.id %>/item/<%= item.id %>/remove"
+          onclick="return confirm('Remove <%= item.name %> from <%= category.name %>?')"
+        >
+          <button class="btn btn-danger my-2">
+            Remove From <%= category.name %>
+          </button>
+        </a>
+      </li>
+    <% end %>
+  </ul>
+</div>
