@@ -18,7 +18,7 @@ describe IntegerArrayIncrementer do
 
     expect(actual_output).to(eq(expected_output))
   end
-  
+
   it 'given [9] should return [1, 0]' do
     input = [9]
     expected_output = [1, 0]
@@ -26,6 +26,14 @@ describe IntegerArrayIncrementer do
     actual_output = IntegerArrayIncrementer.new.increment(input)
   
     expect(actual_output).to(eq(expected_output))
-    input
+  end
+
+  it 'given [1, 0] should return [1, 1]' do
+    input = [1, 0]
+    expected_output = [1, 1]
+  
+    actual_output = IntegerArrayIncrementer.new.increment(input)
+  
+    expect(actual_output).to(eq(expected_output))
   end
 end
