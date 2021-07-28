@@ -5,19 +5,28 @@
         "lines": [
           1,
           null,
-          0,
-          0,
-          0,
-          0,
+          1,
+          1,
+          1,
+          1,
           null,
-          0,
+          1,
           null,
-          0,
+          1,
+          null,
+          null
+        ]
+      },
+      "/home/aldinfitrah/code/ruby/generasi-gigih/w4/s2/integer_array_incrementer.rb": {
+        "lines": [
+          1,
+          1,
+          1,
           null,
           null
         ]
       }
     },
-    "timestamp": 1627473567
+    "timestamp": 1627473669
   }
 }

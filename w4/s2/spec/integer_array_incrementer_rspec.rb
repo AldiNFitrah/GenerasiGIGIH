@@ -1,4 +1,4 @@
-require ""
+require_relative "../integer_array_incrementer.rb"
 
 describe IntegerArrayIncrementer do
   it 'given [0] should return [1]' do
