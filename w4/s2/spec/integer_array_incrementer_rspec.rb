@@ -21,7 +21,7 @@ describe IntegerArrayIncrementer do
   
   it 'given [9] should return [1, 0]' do
     input = [9]
-    expected_output = [10]
+    expected_output = [1, 0]
   
     actual_output = IntegerArrayIncrementer.new.increment(input)
   
