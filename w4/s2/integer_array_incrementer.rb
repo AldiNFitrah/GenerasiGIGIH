@@ -2,16 +2,18 @@ class IntegerArrayIncrementer
   def increment(arr)
     new_arr = arr[0..-2] + [arr[-1] + 1]
 
-    if new_arr[-1] == 10 then
-      if new_arr.length == 1 then
-        return [1, 0]
-      elsif new_arr.length == 2 then
-        if new_arr[0] == 9
-          return [1, 0, 0]
-        else
-          return [new_arr[0] + 1, 0]
-        end
+    current_idx = arr.length - 1
+
+    until new_arr[current_idx] != 10 || current_idx < 0 do
+      new_arr[current_idx] = 0
+
+      if current_idx - 1 < 0 then
+        new_arr.unshift(1)
+      else
+        new_arr[current_idx - 1] += 1
       end
+
+      current_idx -= 1
     end
 
     return new_arr
