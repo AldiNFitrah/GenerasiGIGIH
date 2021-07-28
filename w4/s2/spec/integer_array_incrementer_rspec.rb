@@ -9,4 +9,13 @@ describe IntegerArrayIncrementer do
 
     expect(actual_output).to(eq(expected_output))
   end
+
+  it 'given [1] should return [2]' do
+    input = [1]
+    expected_output = [2]
+
+    actual_output = IntegerArrayIncrementer.new.increment(input)
+
+    expect(actual_output).to(eq(expected_output))
+  end
 end
