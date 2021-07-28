@@ -1,5 +1,5 @@
 class IntegerArrayIncrementer
   def increment(arr)
-    return [1]
+    arr[0..-2] + [arr[-1] + 1]
   end
 end
