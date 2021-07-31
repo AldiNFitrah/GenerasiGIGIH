@@ -1,5 +1,5 @@
-require_relative '../models/category'
-require_relative '../models/item'
+require './models/category'
+require './models/item'
 
 class ItemController
   def self.create(params)

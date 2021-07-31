@@ -1,14 +1,12 @@
 require 'sinatra'
 require 'sinatra/namespace'
 require 'sinatra/reloader' if development?
-
 require 'ap'
-require_relative './models/item.rb'
-require_relative './models/category.rb'
-require_relative './controllers/item_controller.rb'
-require_relative './controllers/category_controller.rb'
 
-
+require './models/item.rb'
+require './models/category.rb'
+require './controllers/item_controller.rb'
+require './controllers/category_controller.rb'
 
 get '/' do
   return erb(

@@ -1,4 +1,4 @@
-require_relative '../db/mysql_connector.rb'
+require './db/mysql_connector.rb'
 
 class Category
   attr_accessor :id, :name

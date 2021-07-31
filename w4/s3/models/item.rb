@@ -1,4 +1,4 @@
-require_relative '../db/mysql_connector'
+require './db/mysql_connector'
 
 class Item
   attr_accessor :id, :name, :price

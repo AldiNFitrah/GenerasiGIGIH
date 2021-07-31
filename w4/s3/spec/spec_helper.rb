@@ -4,8 +4,9 @@ Dotenv.load
 ENV["DB_NAME"] = ENV["TEST_DB_NAME"]
 
 require 'simplecov'
-require_relative '../db/mysql_connector.rb'
-require_relative '../models/category.rb'
+
+require './db/mysql_connector.rb'
+require './models/category.rb'
 SimpleCov.start
 
 

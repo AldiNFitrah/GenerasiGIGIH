@@ -1,4 +1,4 @@
-require_relative '../models/category'
+require './models/category'
 
 class CategoryController
   def self.create(params)

@@ -1,4 +1,5 @@
-require_relative '../../models/item.rb'
+require './db/mysql_connector.rb'
+require './models/item.rb'
 
 describe Item do
   describe 'dummy' do
