@@ -183,4 +183,24 @@ describe Item do
     end
   end
   
+  describe '#delete' do
+    before(:each) do
+      @item = Item.new({
+        name: "item for #delete",
+        price: 243,
+      })
+      @item.save()
+    end
+
+    it 'should success' do
+      @item.delete()
+
+      all_item = client.query("SELECT * FROM items")
+
+      expected_item_in_db = 0
+      actual_item_in_db = all_item.count()
+
+      expect(actual_item_in_db).to(eq(expected_item_in_db))
+    end
+  end
 end
