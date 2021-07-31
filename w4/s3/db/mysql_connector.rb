@@ -20,5 +20,24 @@ class MySqlClient
     )
   end
 
+  def self.truncate_all()
+    queries = instance().query("
+      SELECT
+        Concat('TRUNCATE TABLE ',table_schema,'.',TABLE_NAME, ';') AS 'truncate_table'
+      FROM
+        INFORMATION_SCHEMA.TABLES
+      WHERE
+        table_schema IN ('#{ENV['DB_NAME']}')
+    ")
+
+    instance().query("SET FOREIGN_KEY_CHECKS = 0")
+
+    queries.each do |query|
+      instance.query(query['truncate_table'])
+    end
+
+    instance().query("SET FOREIGN_KEY_CHECKS = 1")
+  end
+
   private_class_method :get_client, :new
 end

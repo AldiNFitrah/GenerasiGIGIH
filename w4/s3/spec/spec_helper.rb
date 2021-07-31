@@ -29,21 +29,12 @@ RSpec.configure do |config|
   # rspec-expectations config goes here. You can use an alternate
   # assertion/expectation library such as wrong or the stdlib/minitest
   # assertions if you prefer.
+  config.before(:all) do
+    MySqlClient.truncate_all()
+  end
+  
   config.after(:each) do
-    raw_data = client.query("
-      SELECT *
-      FROM categories
-    ")
-    categories = []
-    raw_data.each do |data|
-      category = Category.new({
-        id: data['id'],
-        name: data['name'],
-      })
-      categories.push(category)
-    end
-
-    p(categories)
+    MySqlClient.truncate_all()
   end
   
   config.expect_with :rspec do |expectations|
