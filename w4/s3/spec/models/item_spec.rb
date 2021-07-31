@@ -3,6 +3,8 @@ require './models/item.rb'
 
 describe Item do
 
+  client = MySqlClient.instance()
+
   describe '#valid?' do
     context 'given name and price' do
       it 'returns true' do
@@ -56,4 +58,41 @@ describe Item do
     end
 
   end
+
+  describe '#save' do
+    context 'given valid params' do
+      it 'should be inserted into database' do
+        item = Item.new({
+          name: 'new item',
+          price: 1,
+        })
+        item.save()
+
+        all_item = client.query("SELECT * FROM items")
+
+        expected_item_in_db = 1
+        actual_item_in_db = all_item.count()
+
+        expect(actual_item_in_db).to(eq(expected_item_in_db))
+      end
+    end
+
+    context 'given invalid params' do
+      it 'should not be inserted into database' do
+        item = Item.new({
+          name: 'brand new item',
+        })
+        item.save()
+
+        all_item = client.query("SELECT * FROM items")
+
+        expected_item_in_db = 0
+        actual_item_in_db = all_item.count()
+
+        expect(actual_item_in_db).to(eq(expected_item_in_db))
+      end
+    end
+  end
+
+  
 end
