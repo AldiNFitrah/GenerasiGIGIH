@@ -375,4 +375,43 @@ describe Item do
       end
     end
   end
+
+  describe '.get_by_category_id' do
+    before(:each) do
+      client.query("
+        INSERT INTO categories(name) VALUES
+          ('cat')
+      ")
+
+      @category_id = client.last_id
+    end
+
+    context 'given 1 item to that category' do
+      before(:each) do
+        @item = Item.new({
+          name: "item for #categories",
+          price: 1213,
+        })
+        @item.save()
+
+        @item.add_category_by_ids([@category_id])
+      end
+
+      it 'should return 1 item' do
+        expected_items = [@item]
+        actual_items = Item.get_by_category_id(@category_id)
+
+        expect(actual_items).to(match_array(expected_items))
+      end
+    end
+
+    context 'given 0 item to that category' do
+      it 'should return empty array' do
+        expected_items = []
+        actual_items = Item.get_by_category_id(@category_id)
+
+        expect(actual_items).to(eq(expected_items))
+      end
+    end
+  end
 end
