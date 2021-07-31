@@ -116,6 +116,37 @@ describe CategoryController do
     end
   end
 
+  describe '.details' do
+    context 'given a category' do
+      before(:each) do
+        @category = Category.new({
+          name: "cat1",
+        })
 
+        @category.save()
+
+      end
+
+      it 'should return the correct cateogry' do
+        expected_return_value = {category: @category}
+        actual_return_value = controller.details({
+          "id" => @category.id,
+        })
+
+        expect(actual_return_value).to(eq(expected_return_value))
+      end
+    end
+
+    context 'given 0 categories' do
+      it 'should return nil inside hash' do
+        expected_return_value = {category: nil}
+        actual_return_value = controller.details({
+          "id" => -213
+        })
+
+        expect(actual_return_value).to(eq(expected_return_value))
+      end
+    end
+  end
 
 end
