@@ -124,7 +124,6 @@ describe CategoryController do
         })
 
         @category.save()
-
       end
 
       it 'should return the correct cateogry' do
@@ -149,4 +148,53 @@ describe CategoryController do
     end
   end
 
+  describe '.update' do
+    before(:each) do
+      @category = Category.new({
+        name: "cat1",
+      })
+
+      @category.save()
+    end
+
+    context 'given valid id and new name' do
+      before(:each) do
+        @new_name = "brand new name"
+
+        controller.update({
+          "id" => @category.id,
+          "name" => @new_name
+        })
+      end
+
+      it 'should be updated' do
+        category = Category.get_by_id(@category.id)
+
+        expected_category_name = @new_name
+        actual_category_name = category.name
+
+        expect(actual_category_name).to(eq(expected_category_name))
+      end
+    end
+
+    context 'given wrong id and new name' do
+      before(:each) do
+        @new_name = "brand new name"
+
+        controller.update({
+          "id" => -213,
+          "name" => @new_name
+        })
+      end
+
+      it 'should not be updated' do
+        category = Category.get_by_id(@category.id)
+
+        expected_category_name = @category.name
+        actual_category_name = category.name
+
+        expect(actual_category_name).to(eq(expected_category_name))
+      end
+    end
+  end
 end
