@@ -10,6 +10,11 @@ class CategoryController
 
   def self.delete(params)
     category = Category.get_by_id(params["id"])
+
+    if category.nil? then
+      return
+    end
+
     category.delete()
   end
 
