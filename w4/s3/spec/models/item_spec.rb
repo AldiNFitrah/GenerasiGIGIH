@@ -134,6 +134,27 @@ describe Item do
     end
   end
 
+  describe '#delete' do
+    before(:each) do
+      @item = Item.new({
+        name: "item for #delete",
+        price: 243,
+      })
+      @item.save()
+    end
+
+    it 'should success' do
+      @item.delete()
+
+      all_item = client.query("SELECT * FROM items")
+
+      expected_item_in_db = 0
+      actual_item_in_db = all_item.count()
+
+      expect(actual_item_in_db).to(eq(expected_item_in_db))
+    end
+  end
+
   describe '#categories' do
     before(:each) do
       @item = Item.new({
@@ -182,25 +203,61 @@ describe Item do
       end
     end
   end
-  
-  describe '#delete' do
+
+  describe '#add_category_by_ids' do
     before(:each) do
       @item = Item.new({
-        name: "item for #delete",
-        price: 243,
+        name: "item for #categories",
+        price: 1213,
       })
       @item.save()
     end
 
-    it 'should success' do
-      @item.delete()
+    context 'given 1 id' do
+      before(:each) do
+        @category = Category.new({
+          name: "cat1",
+        })
 
-      all_item = client.query("SELECT * FROM items")
+        @category.save()
 
-      expected_item_in_db = 0
-      actual_item_in_db = all_item.count()
+        @item.add_category_by_ids([@category.id])
+      end
 
-      expect(actual_item_in_db).to(eq(expected_item_in_db))
+      it 'should be connected to 1 category' do
+        result = client.query("
+          SELECT *
+          FROM item_categories
+          WHERE
+            item_id = #{@item.id}
+        ")
+
+        expected_num_of_categories = 1
+        actual_num_of_categories = result.count()
+
+        expect(actual_num_of_categories).to(eq(expected_num_of_categories))
+      end
+    end
+
+    context 'given 0 id' do
+      before(:each) do
+        @item.add_category_by_ids([])
+      end
+
+      it 'should be connected to 0 category' do
+        result = client.query("
+          SELECT *
+          FROM item_categories
+          WHERE
+            item_id = #{@item.id}
+        ")
+
+        expected_num_of_categories = 0
+        actual_num_of_categories = result.count()
+
+        expect(actual_num_of_categories).to(eq(expected_num_of_categories))
+      end
     end
   end
+  
 end

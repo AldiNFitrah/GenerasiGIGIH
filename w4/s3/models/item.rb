@@ -1,7 +1,8 @@
 require './db/mysql_connector'
 
 class Item
-  attr_accessor :id, :name, :price
+  attr_reader :id
+  attr_accessor :name, :price
 
   @@client = MySqlClient.instance()
 
