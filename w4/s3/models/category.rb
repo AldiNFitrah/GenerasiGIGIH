@@ -114,6 +114,7 @@ class Category
   end
 
   def ==(other)
-    return (self.id == other.id && self.name == other.name)
+    return (self.id == other.id &&
+      self.name == other.name)
   end
 end

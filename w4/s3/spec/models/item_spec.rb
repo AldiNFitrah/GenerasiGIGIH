@@ -321,13 +321,10 @@ describe Item do
   describe '.all' do
     context 'given 0 items in database' do
       it 'should return 0 items' do
-        result = client.query("
-          SELECT *
-          FROM items
-        ")
+        all_item = Item.all()
 
         expected_num_of_items = 0
-        actual_num_of_items = result.count()
+        actual_num_of_items = all_item.count()
 
         expect(actual_num_of_items).to(eq(expected_num_of_items))
       end
@@ -343,15 +340,38 @@ describe Item do
       end
 
       it 'should return 2 items' do
-        result = client.query("
-          SELECT *
-          FROM items
-        ")
+        all_item = Item.all()
 
         expected_num_of_items = 2
-        actual_num_of_items = result.count()
+        actual_num_of_items = all_item.count()
 
         expect(actual_num_of_items).to(eq(expected_num_of_items))
+      end
+    end
+  end
+
+  describe '.get_by_id' do
+    context 'given same id in database' do
+      before(:each) do
+        @item_name = "item1"
+        @item_price = 123
+        client.query("
+          INSERT INTO items(name, price) VALUES
+            ('#{@item_name}', #{@item_price})
+        ")
+
+        @item_id = client.last_id
+      end
+
+      it 'should return the item' do
+        expected_item = Item.new({
+          id: @item_id,
+          name: @item_name,
+          price: @item_price
+        })
+        actual_item = Item.get_by_id(@item_id)
+
+        expect(actual_item).to(eq(expected_item))
       end
     end
   end
