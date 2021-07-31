@@ -1,5 +1,6 @@
 require './controllers/category_controller.rb'
 require './models/category.rb'
+require './models/item.rb'
 
 describe CategoryController do
 
@@ -194,6 +195,78 @@ describe CategoryController do
         actual_category_name = category.name
 
         expect(actual_category_name).to(eq(expected_category_name))
+      end
+    end
+  end
+
+  describe '.remove_item' do
+    before(:each) do
+      @category = Category.new({
+        name: 'new cat',
+      })
+      @category.save()
+
+      @item1 = Item.new({
+        name: "item1",
+        price: 1,
+      })
+      @item2 = Item.new({
+        name: "item2",
+        price: 2,
+      })
+
+      @item1.save()
+      @item2.save()
+
+      @item1.add_category_by_ids([@category.id])
+      @item2.add_category_by_ids([@category.id])
+    end
+
+    context 'given a matching id' do
+      before(:each) do
+        controller.remove_item({
+          "id" => @category.id,
+          "item_id" => @item1.id,
+        })
+      end
+
+      it 'should leaving only 1 item left' do
+        expected_related_items = [@item2]
+        actual_related_items = Item.get_by_category_id(@category.id)
+
+        expect(actual_related_items).to(match_array(expected_related_items))
+      end
+    end
+
+    context 'given wrong category id' do
+      before(:each) do
+        controller.remove_item({
+          "id" => -123,
+          "item_id" => @item1.id,
+        })
+      end
+
+      it 'should not remove anything' do
+        expected_related_items = [@item1, @item2]
+        actual_related_items = Item.get_by_category_id(@category.id)
+
+        expect(actual_related_items).to(match_array(expected_related_items))
+      end
+    end
+
+    context 'given wrong item id' do
+      before(:each) do
+        controller.remove_item({
+          "id" => @category.id,
+          "item_id" => -324,
+        })
+      end
+
+      it 'should not remove anything' do
+        expected_related_items = [@item1, @item2]
+        actual_related_items = Item.get_by_category_id(@category.id)
+
+        expect(actual_related_items).to(match_array(expected_related_items))
       end
     end
   end
