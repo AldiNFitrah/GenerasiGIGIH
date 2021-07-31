@@ -140,4 +140,10 @@ class Item
 
     return items
   end
+
+  def ==(other)
+    return (self.id == other.id && 
+      self.name == other.name && 
+      self.price == other.price)
+  end
 end
