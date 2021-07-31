@@ -259,5 +259,100 @@ describe Item do
       end
     end
   end
-  
+
+  describe '#remove_category_by_ids' do
+    before(:each) do
+      @item = Item.new({
+        name: "item for #categories",
+        price: 1213,
+      })
+      @item.save()
+
+      @category = Category.new({
+        name: "cat1",
+      })
+
+      @category.save()
+
+      @item.add_category_by_ids([@category.id])
+    end
+
+    context 'remove 0 category' do
+      before(:each) do
+        @item.remove_category_by_ids([])
+      end
+      
+      it 'should still be connected to 1 category' do
+        result = client.query("
+          SELECT *
+          FROM item_categories
+          WHERE
+            item_id = #{@item.id}
+        ")
+
+        expected_num_of_categories = 1
+        actual_num_of_categories = result.count()
+
+        expect(actual_num_of_categories).to(eq(expected_num_of_categories))
+      end
+    end
+
+    context 'remove 1 category' do
+      before(:each) do
+        @item.remove_category_by_ids([@category.id])
+      end
+
+      it 'should be connected to 0 category' do
+        result = client.query("
+          SELECT *
+          FROM item_categories
+          WHERE
+            item_id = #{@item.id}
+        ")
+
+        expected_num_of_categories = 0
+        actual_num_of_categories = result.count()
+
+        expect(actual_num_of_categories).to(eq(expected_num_of_categories))
+      end
+    end
+  end
+
+  describe '.all' do
+    context 'given 0 items in database' do
+      it 'should return 0 items' do
+        result = client.query("
+          SELECT *
+          FROM items
+        ")
+
+        expected_num_of_items = 0
+        actual_num_of_items = result.count()
+
+        expect(actual_num_of_items).to(eq(expected_num_of_items))
+      end
+    end
+
+    context 'given 2 items in database' do
+      before(:each) do
+        client.query("
+          INSERT INTO items(name, price) VALUES
+            ('item1', 123),
+            ('item2', 321)
+        ")
+      end
+
+      it 'should return 2 items' do
+        result = client.query("
+          SELECT *
+          FROM items
+        ")
+
+        expected_num_of_items = 2
+        actual_num_of_items = result.count()
+
+        expect(actual_num_of_items).to(eq(expected_num_of_items))
+      end
+    end
+  end
 end
