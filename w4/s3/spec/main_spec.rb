@@ -1,5 +1,6 @@
 require 'rack/test'
 require 'ap'
+require 'erb'
 
 require './main.rb'
 require './models/category.rb'
@@ -16,7 +17,7 @@ describe 'main' do
 
   describe '/' do
     context 'get /' do
-      before(:all) do
+      before(:each) do
         get '/'
       end
       
@@ -25,6 +26,16 @@ describe 'main' do
         expect(last_response.body).to(include('Items'))
         expect(last_response.body).to(include('Categories'))
       end
+    end
+  end
+
+  describe 'url not found' do
+    before(:each) do
+      get '/fhicruehdsgjvreksfdivures'
+    end
+
+    it 'should render 404 page' do
+      expect(last_response.body).to(include('404'))
     end
   end
   
@@ -149,6 +160,53 @@ describe 'main' do
 
           follow_redirect!
           expect(last_request.path).to(eq('/category'))
+        end
+      end
+
+      context 'post /:id/update' do
+        before(:each) do
+          @new_category_name = "udpated category"
+          post "/category/#{@category2.id}/update", params={"name" => @new_category_name}
+        end
+
+        it 'should be updated' do
+          updated_category = Category.get_by_id(@category2.id)
+
+          expected_name = @new_category_name
+          actual_name = updated_category.name
+
+          expect(expected_name).to(eq(actual_name))
+        end
+
+        it 'should be redirected to /' do
+          expect(last_response.redirect?).to(be(true))
+
+          follow_redirect!
+          expect(last_request.path).to(eq('/category'))
+        end
+      end
+
+      context 'post /:id/item/:item_id/remove' do
+        before(:each) do
+          get(
+            "/category/#{@category2.id}/item/#{@item2.id}/remove"
+          )
+        end
+
+        it 'should remove item' do
+          category = Category.get_by_id(@category2.id)
+
+          expected_related_items = []
+          actual_related_items = category.items
+
+          expect(actual_related_items).to(match_array(expected_related_items))
+        end
+
+        it 'should be redirected to /:id/edit' do
+          expect(last_response.redirect?).to(be(true))
+
+          follow_redirect!
+          expect(last_request.path).to(eq("/category/#{@category2.id}/edit"))
         end
       end
 

@@ -8,6 +8,7 @@ require './models/category.rb'
 require './controllers/item_controller.rb'
 require './controllers/category_controller.rb'
 
+
 class FoodOmsApp < Sinatra::Base
 
   register Sinatra::Namespace
