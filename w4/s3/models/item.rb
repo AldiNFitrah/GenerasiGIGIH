@@ -3,6 +3,8 @@ require_relative '../db/mysql_connector'
 class Item
   attr_accessor :id, :name, :price
 
+  @@client = MySqlClient.instance()
+
   def initialize(params)
     @id = params[:id]
     @name = params[:name]
@@ -13,15 +15,14 @@ class Item
   def save
     return false unless valid
 
-    client = create_db_client
     if @id.nil?
-      client.query("
+      @@client.query("
         INSERT INTO items(name, price) VALUES
           ('#{name}', '#{price}')
       ")
-      @id = client.last_id
+      @id = @@client.last_id
     else
-      client.query("
+      @@client.query("
         UPDATE items
         SET
           name = '#{@name}',
@@ -59,8 +60,7 @@ class Item
   end
 
   def delete()
-    client = create_db_client()
-    client.query("
+    @@client.query("
       DELETE FROM items
       WHERE id = #{@id}  
     ")
@@ -75,8 +75,7 @@ class Item
       |category_id| "(#{@id}, #{category_id})"
     }
 
-    client = create_db_client
-    client.query("
+    @@client.query("
       INSERT INTO item_categories(item_id, category_id) VALUES
         #{string_values.join(', ')}
     ")
@@ -87,8 +86,7 @@ class Item
       return
     end
 
-    client = create_db_client
-    client.query("
+    @@client.query("
       DELETE FROM item_categories
       WHERE
         item_id = #{@id}
@@ -97,8 +95,8 @@ class Item
   end
 
   def self.all()
-    client = create_db_client
-    raw_data = client.query("
+    p(@@client)
+    raw_data = @@client.query("
       SELECT *
       FROM items
     ")
@@ -106,8 +104,7 @@ class Item
   end
 
   def self.get_by_id(id)
-    client = create_db_client()
-    raw_data = client.query("
+    raw_data = @@client.query("
       SELECT *
       FROM items
       WHERE id = #{id}
@@ -117,8 +114,7 @@ class Item
   end
 
   def self.get_by_category_id(category_id)
-    client = create_db_client
-    raw_data = client.query("
+    raw_data = @@client.query("
       SELECT *
       FROM
         items i

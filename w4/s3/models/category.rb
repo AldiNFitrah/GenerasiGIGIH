@@ -3,6 +3,8 @@ require_relative '../db/mysql_connector.rb'
 class Category
   attr_accessor :id, :name
 
+  @@client = MySqlClient.instance()
+
   def initialize(params)
     @id = params[:id]
     @name = params[:name]
@@ -14,16 +16,14 @@ class Category
       return nil
     end
 
-    client = create_db_client()
-
     if @id.nil?
-      client.query("
+      @@client.query("
         INSERT INTO categories(name) VALUES
           ('#{@name}')
       ")
-      @id = client.last_id
+      @id = @@client.last_id
     else
-      client.query("
+      @@client.query("
         UPDATE categories
         SET name = '#{@name}'
         WHERE id = #{@id}
@@ -53,16 +53,14 @@ class Category
   end
 
   def delete()
-    client = create_db_client()
-    client.query("
+    @@client.query("
       DELETE FROM categories
       WHERE id = #{@id}
     ")
   end
 
   def self.get_by_item_id(item_id)
-    client = create_db_client
-    raw_data = client.query("
+    raw_data = @@client.query("
       SELECT *
       FROM
         categories c
@@ -76,8 +74,7 @@ class Category
   end
 
   def self.remove_item(id, item_id)
-    client = create_db_client()
-    client.query("
+    @@client.query("
       DELETE FROM item_categories ic
       WHERE
         category_id = #{id}
@@ -86,8 +83,7 @@ class Category
   end
 
   def self.all()
-    client = create_db_client
-    raw_data = client.query("
+    raw_data = @@client.query("
       SELECT *
       FROM categories
     ")
@@ -95,8 +91,7 @@ class Category
   end
 
   def self.get_by_id(id)
-    client = create_db_client()
-    raw_data = client.query("
+    raw_data = @@client.query("
       SELECT *
       FROM categories
       WHERE id = #{id}

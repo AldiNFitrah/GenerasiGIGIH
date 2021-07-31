@@ -1,15 +1,14 @@
 require 'sinatra'
 require 'sinatra/namespace'
 require 'sinatra/reloader' if development?
-require 'dotenv'
+
 require 'ap'
-require_relative './db/mysql_connector.rb'
 require_relative './models/item.rb'
 require_relative './models/category.rb'
 require_relative './controllers/item_controller.rb'
 require_relative './controllers/category_controller.rb'
 
-Dotenv.load
+
 
 get '/' do
   return erb(
