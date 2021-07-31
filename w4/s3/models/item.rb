@@ -12,8 +12,8 @@ class Item
     @categories = params[:categories]
   end
 
-  def save
-    return false unless valid
+  def save()
+    return false unless valid?()
 
     if @id.nil?
       @@client.query("
@@ -34,7 +34,7 @@ class Item
     return self
   end
 
-  def valid
+  def valid?()
     return false if @name.nil?
     return false if @price.nil?
 
@@ -47,7 +47,7 @@ class Item
     self.save()
   end
 
-  def categories
+  def categories()
     if @categories.nil?
       @categories = Category.get_by_item_id(@id)
     end
@@ -55,7 +55,7 @@ class Item
     return @categories
   end
 
-  def category_ids
+  def category_ids()
     return self.categories.map(&:id)
   end
 
@@ -95,7 +95,6 @@ class Item
   end
 
   def self.all()
-    p(@@client)
     raw_data = @@client.query("
       SELECT *
       FROM items
@@ -123,7 +122,7 @@ class Item
       WHERE
         ic.category_id = #{category_id}
     ")
-    
+
     return convert_sql_to_ruby(raw_data)
   end
 
