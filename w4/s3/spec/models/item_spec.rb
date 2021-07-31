@@ -1,4 +1,5 @@
 require './db/mysql_connector.rb'
+require './models/category.rb'
 require './models/item.rb'
 
 describe Item do
@@ -132,4 +133,54 @@ describe Item do
       end
     end
   end
+
+  describe '#categories' do
+    before(:each) do
+      @item = Item.new({
+        name: "item for #categories",
+        price: 1213,
+      })
+      @item.save()
+    end
+
+    context 'given no categories' do
+      it 'should return empty array' do
+        expected_categories = []
+        actual_categories = @item.categories()
+
+        expect(actual_categories).to(match_array(expected_categories))
+      end
+    end
+
+    context 'given 2 categories' do
+      before(:each) do
+        @category1 = Category.new({
+          name: "cat1",
+        })
+        @category2 = Category.new({
+          name: "cat2",
+        })
+
+        @category1.save()
+        @category2.save()
+
+        @item.add_category_by_ids([@category1.id, @category2.id])
+      end
+
+      it 'should contain 2 categories' do
+        expected_categories = [@category1, @category2]
+        actual_categories = @item.categories()
+
+        expect(actual_categories).to(match_array(expected_categories))
+      end
+
+      it '#category_ids should contain 2 categories' do
+        expected_category_ids = [@category1.id, @category2.id]
+        actual_category_ids = @item.category_ids()
+
+        expect(expected_category_ids).to(match_array(actual_category_ids))
+      end
+    end
+  end
+  
 end
