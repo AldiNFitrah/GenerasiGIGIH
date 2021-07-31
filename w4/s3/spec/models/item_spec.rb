@@ -94,5 +94,42 @@ describe Item do
     end
   end
 
-  
+  describe '#update' do
+    context 'given new name' do
+      before(:each) do
+        @item = item = Item.new({
+          name: 'new item',
+          price: 1,
+        })
+        @item.save()
+
+        @new_item_name = 'kinder joy'
+        @item.update(updated_data = {
+          name: @new_item_name,
+        })
+      end
+
+      it 'should update the instance name' do
+        expected_item_name = @new_item_name
+        actual_item_name = @item.name
+
+        expect(actual_item_name).to(eq(expected_item_name))
+      end
+
+      it 'should update the name in database' do
+        result = client.query("
+          SELECT *
+          FROM items
+          WHERE id = #{@item.id}
+        ")
+
+        item_data = result.first
+
+        expected_item_name = @new_item_name
+        actual_item_name = item_data["name"]
+
+        expect(actual_item_name).to(eq(expected_item_name))
+      end
+    end
+  end
 end

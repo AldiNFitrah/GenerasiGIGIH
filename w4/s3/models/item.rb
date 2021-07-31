@@ -42,8 +42,8 @@ class Item
   end
 
   def update(updated_data = [])
-    @name = updated_data["name"] || @name
-    @price = updated_data["price"] || @price
+    @name = updated_data[:name] || @name
+    @price = updated_data[:price] || @price
     self.save()
   end
 
