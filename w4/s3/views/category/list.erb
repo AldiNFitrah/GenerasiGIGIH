@@ -1,0 +1,42 @@
+
+<div class="px-4">
+  <%= erb :'category/category_menu' %>
+
+  <h1>Category</h1>
+
+  <table class="table table-hover table-sm">
+  <thead>
+    <tr>
+      <th scope="col">Name</th>
+      <th scope="col">Actions</th>
+    </tr>
+  </thead>
+  <tbody>
+    <% categories.each do |category| %>
+      <tr>
+        <td scope="row"> <%= category.name %> </td>
+        <td>
+          <a href="/category/<%= category.id %>">
+            <button class="btn btn-primary">
+              Details
+            </button>
+          </a>
+          <a href="/category/<%= category.id %>/edit">
+            <button class="btn btn-warning">
+              Edit
+            </button>
+          </a>
+          <a
+            href="/category/<%= category.id %>/delete"
+            onclick="return confirm('Delete category: <%= category.name %>?')"
+          >
+            <button class="btn btn-danger">
+              Delete
+            </button>
+          </a>
+        </td>
+      </tr>
+    <% end %>
+  </tbody>
+
+</div>
