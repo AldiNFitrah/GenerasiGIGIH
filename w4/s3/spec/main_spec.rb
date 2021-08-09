@@ -1,5 +1,4 @@
 require 'rack/test'
-require 'ap'
 require 'erb'
 
 require './main.rb'

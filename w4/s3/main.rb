@@ -1,7 +1,6 @@
 require 'sinatra'
 require 'sinatra/namespace'
 require 'sinatra/reloader' if development?
-require 'ap'
 
 require './models/item.rb'
 require './models/category.rb'
@@ -12,6 +11,8 @@ require './controllers/category_controller.rb'
 class FoodOmsApp < Sinatra::Base
 
   register Sinatra::Namespace
+
+  set :bind, "0.0.0.0"
 
   get '/' do
     return erb(
